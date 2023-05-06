@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include "struct.h"
+#include <cstdio> // для определения NULL
 using namespace std;
 
 typedef Record DataType;
@@ -14,6 +14,7 @@ class Stack
         virtual int push(DataType * x) = 0; // добавление
         virtual DataType * pop() = 0; // извлечение
         virtual int isEmpty() = 0; // проверка на пустоту
+        virtual int isFull() = 0; // проверка на заполненность
         virtual DataType *  getTop() = 0; // просмотр верхнего элемента
 };
 //необходимо также перегрузить конструктор копирования и операцию присваивания
@@ -27,7 +28,7 @@ class VectorStack: public Stack
     public:
         VectorStack(int length = 100) // конструктор
         {
-            data = new DataType *[length]; // создаём статический массив для указателей на данные
+            data = new DataType * [length]; // создаём статический массив для указателей на данные
             top = -1;
             max_length = length;
         }
@@ -59,7 +60,7 @@ class VectorStack: public Stack
                 return data[top--]; // возвращаем верхний элемент и уменьшаем индекс вершины
         }
 
-        int isFull()
+        int isFull() override
         {
             return top == max_length - 1; // 1 - если индекс вершины равен максимальной глубине стека
         }
@@ -104,9 +105,9 @@ class ListStack: public Stack
 
         int push(DataType * x) override
         {
-            Node * temp = new Node; // создаём новый узел
-            if(temp == NULL) // если не удалось создать узел 
+            if(isFull())
                 return 0;
+            Node * temp = new Node; // создаём новый узел
             temp->data = x; // привязываем данные к новому узлу
             temp->next = p_stack; // направляем указатель нового узла на первый элемент списка(или на NULL, если список пустой)
             p_stack = temp; // указателю на список присваиваем адрес нового узла
@@ -120,6 +121,18 @@ class ListStack: public Stack
             p_stack = p_stack->next; // начало списка устанавливаем на 2 элемент
             delete p_temp_Node; // очищаем память от узла
             return p_temp_Datatype; // возвращаем указатель на данные
+        }
+
+        int isFull() override
+        {
+            Node * tmp;
+            tmp = new Node;
+            if(tmp == NULL)
+            {
+                return 1;
+            }
+            delete tmp;
+            return 0;
         }
 
         int isEmpty() override
