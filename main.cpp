@@ -53,7 +53,7 @@ int main(void)
 
             if(stack->getTop()->type == 0) // если добавили запись о закупке 
             {
-                cout << "Закупили товара на " << stack->getTop()->amount * stack->getTop()->cost << endl; // выводим общую стоимость закупленной партии
+                cout << "Закупили товара на " << stack->getTop()->amount * stack->getTop()->cost << "$" << endl; // выводим общую стоимость закупленной партии
             }
             else // если добавили запись о продаже
             {
@@ -80,7 +80,7 @@ int main(void)
                     }
                 }
 
-                if(!stack->isEmpty() && sell_record->amount > 0) // если не хватило товара
+                if(stack->isEmpty() && sell_record->amount > 0) // если не хватило товара
                     cout << "на складе не хватает " << sell_record->amount << " позиций товара" << endl;
             }
             cout << "ENTER - для возврата в меню" << endl;
@@ -101,6 +101,7 @@ int main(void)
             while(cin.get() != '\n');
         }
     }while(menu != 2);
+
 
     delete stack;
     return 0;
@@ -238,6 +239,9 @@ int enterRecord(Stack * stack)
 
         while(!isdigit(input[++i])); // ищем цифру
 
+        if(i == end) // если не нашли
+            continue; // повторяем запрос на запись
+
         while(isdigit(input[i])) // пока цифры
             stream << input[i++];
         stream >> new_record->amount;
@@ -246,36 +250,28 @@ int enterRecord(Stack * stack)
         if(new_record->type == 0)
         {
             bool dot = false;
-            while(isdigit(input[i]) || input[i] == '.' && !dot)
+            while(!isdigit(input[++i])); // ищем цифру
+            if(i == end) // если не нашли
+                continue; // повторяем запрос на запись
+
+            while(isdigit(input[i]) || (input[i] == '.' && !dot)) // если цифра или не перва я точка
             {
                 stream << input[i];
                 if(input[i] == '.')
                     dot = true;
+                i++;
             }
             stream >> new_record->cost;
+            
         }
-
+        break;
 
     }while(1);
 
     stack->push(new_record);
+    return 1;
 }
 
-/* int incorrectInputMenu() // меню при неверном формате входящей записи
-{
-    char temp;
-    cout << "Неверный формат записи" << endl;
-    cout << "ENTER - для повторного ввода" << endl;
-    cout << "SPACE - для выхода в меню" << endl;
-    do
-    {cin >> temp;}
-    while(temp != '\n' && temp != ' ');
-
-    if(temp == ' ')
-        return 0;
-    else
-        return 1;
-} */
 
 int isInt(string &str)
 {
