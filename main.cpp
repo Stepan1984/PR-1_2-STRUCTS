@@ -237,30 +237,43 @@ int enterRecord(Stack * stack)
         else
             new_record->type = 0;
 
-        while(!isdigit(input[++i])); // ищем цифру
+        while(i != end && !isdigit(input[++i])); // ищем цифру
 
         if(i == end) // если не нашли
             continue; // повторяем запрос на запись
 
+        stream.clear();
         while(isdigit(input[i])) // пока цифры
             stream << input[i++];
         stream >> new_record->amount;
-        stream.clear();
+        
 
         if(new_record->type == 0)
         {
+        
             bool dot = false;
-            while(!isdigit(input[++i])); // ищем цифру
+            while(i != end && !isdigit(input[i]) && input[i] != '.') // ищем цифру
+                i++;
             if(i == end) // если не нашли
                 continue; // повторяем запрос на запись
 
+            int start_index = i; // индекс первого элемента числа
+
+            stream.clear();
             while(isdigit(input[i]) || (input[i] == '.' && !dot)) // если цифра или не перва я точка
             {
                 stream << input[i];
                 if(input[i] == '.')
+                {
+                    if(i == start_index) // если точка первый элемент числа
+                        break;
                     dot = true;
+                } 
+                    
                 i++;
             }
+            if(i == start_index)
+                continue;
             stream >> new_record->cost;
             
         }
