@@ -65,12 +65,9 @@ int main(void)
                     if(tmp_record->amount > sell_record->amount) // если товара больше, чем нужно продать
                     {
                         cout << sell_record->amount << " штук по " << tmp_record->cost * 1.2 << " $ каждый на сумму " << tmp_record->cost * sell_record->amount * 1.2 << " $" << endl;
-                        cout << "ENTER - для выхода в меню" << endl;
                         tmp_record->amount -= sell_record->amount; // уменьшаем количество товара на складе
                         stack->push(tmp_record); // отправляем данные обратно в стек
                         sell_record->amount = 0; // обнуляем количество 
-                        while(cin.get() != '\n');
-                        
                     }
                     else // если количество продаваемой продукции >= количеству товара в данной записи стека о наличии
                     {
@@ -123,90 +120,6 @@ int chooseStack() // функция выбора реализации стека
     return menu;
 }
 
-/* int enterRecord(Stack * stack)
-{
-    Record * new_record;
-    new_record = new Record;
-    if(new_record == NULL)
-        return 0;
-    
-    stringstream stream;
-    char ctmp;
-    int itmp;
-    string stmp;
-    do
-    {
-        system("cls");
-        cout << "Введите запись о тороговой оперции" << endl;
-        cout << "(S - префикс операции продажи)" << endl;
-        cout << "(R - префикс операции покупки)" << endl;
-
-        cin >> ctmp;
-        if(ctmp == 'S' || ctmp == 's') // если операция о продаже
-            new_record->type = 1;
-        else
-        {
-            if(ctmp == 'R' || ctmp == 'r')
-                new_record->type = 0;
-            else
-            {
-                cout << "Некорректный тип записи" << endl;
-                cout << "ENTER - для повторного ввода" << endl;
-                while(cin.get() != '\n');
-                continue;
-            }
-        }
-
-        cin >> stmp; // считываем количество товара
-        cin >> ctmp;
-        if(ctmp != '\n' && ctmp != ' ')
-            cin.putback(ctmp);
-        if(isInt(stmp)) // если встроку передали число
-        {
-            stream.clear();
-            stream << stmp;
-            stream >> new_record->amount;
-
-        }
-        else
-        {
-            cout << "Некорректное количество товара" << endl;
-            cout << "ENTER - для повторного ввода" << endl;
-            while(cin.get() != '\n');
-            continue;
-        }
-
-        if(!new_record->type) // если запись о закупке
-        {
-            cin >> stmp; // считываем стоимость одного товара
-            cin.get();
-            // если входной поток пустой
-            //      ничего не считываем
-            // иначе
-            //      считываем символ 
-
-            if(isDouble(stmp)) // если число типа double
-            {
-                stream.clear();
-                stream << stmp;
-                stream >> new_record->cost;
-            }
-            else
-            {
-                cout << "Некорректная цена" << endl;
-                cout << "ENTER - для повторного ввода" << endl;
-                while(cin.get() != '\n');
-                continue;
-            }
-        }
-
-        break;
-    }while(1);
-
-    stack->push(new_record); 
-
-    return 1;
-} */
 
 int enterRecord(Stack * stack)
 {
@@ -237,7 +150,8 @@ int enterRecord(Stack * stack)
         else
             new_record->type = 0;
 
-        while(i != end && !isdigit(input[++i])); // ищем цифру
+        while(i != end && !isdigit(input[i])) // ищем цифру
+            i++;
 
         if(i == end) // если не нашли
             continue; // повторяем запрос на запись
@@ -284,7 +198,6 @@ int enterRecord(Stack * stack)
     stack->push(new_record);
     return 1;
 }
-
 
 int isInt(string &str)
 {
