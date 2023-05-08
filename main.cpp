@@ -199,7 +199,7 @@ int enterRecord(Stack * stack)
     return 1;
 }
 
-int isInt(string &str)
+/* int isInt(string &str)
 {
     int end = str.length();
     for(int i = 0; i < end; i++)
@@ -222,4 +222,4 @@ int isDouble(string &str)
             dot = 1;
     }
     return 1;
-}
+} */
