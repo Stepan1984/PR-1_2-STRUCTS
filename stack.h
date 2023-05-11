@@ -6,18 +6,16 @@ typedef Record DataType;
 
 class Stack
 {
-    private:
-        //Добавлять _ в конце идентификатора
     public:
         Stack(){};
         ~Stack(){};
-        virtual int push(DataType * x) = 0; // добавление
+        virtual int push(int amount, double cost) = 0; // добавление
         virtual DataType * pop() = 0; // извлечение
         virtual int isEmpty() = 0; // проверка на пустоту
         virtual int isFull() = 0; // проверка на заполненность
         virtual DataType *  getTop() = 0; // просмотр верхнего элемента
 };
-//необходимо также перегрузить конструктор копирования и операцию присваивания
+
 
 class VectorStack: public Stack
 {
@@ -28,9 +26,17 @@ class VectorStack: public Stack
     public:
         VectorStack(int length = 100) // конструктор
         {
-            data = new DataType * [length]; // создаём статический массив для указателей на данные
-            top = -1;
-            max_length = length;
+            try
+            {
+                data = new DataType * [length]; // создаём массив для указателей на данные
+                top = -1;
+                max_length = length;
+            }
+            catch(bad_alloc)
+            {
+                
+            }
+            
         }
 
         ~VectorStack() // деструктор
@@ -41,13 +47,16 @@ class VectorStack: public Stack
             delete[] data;
         }
 
-        int push(DataType * x) override
+        int push(int amount, double cost) override
         {
             if(isFull()) // если стек полон
                 return 0;
             else
             {
-                data[++top] = x; //увеличиваем индекс вершины на 1 и добавляем элемент в массив
+                Record * new_record = new Record;
+                new_record->amount = amount;
+                new_record->cost = cost;
+                data[++top] = new_record; //увеличиваем индекс вершины на 1 и добавляем элемент в массив
                 return 1;
             }
         }
@@ -62,19 +71,26 @@ class VectorStack: public Stack
 
         int isFull() override
         {
+            if(data == NULL)
+                return 1;
             return top == max_length - 1; // 1 - если индекс вершины равен максимальной глубине стека
         }
 
         int isEmpty() override
         {
+            if(data == NULL)
+                return 1;
             return top < 0; // 1 - если индекс вершины меньше нуля
         }
 
         DataType * getTop() override
         {
+            if(isEmpty())
+                return NULL;
             return data[top];
         }
 };
+// конструктор копирования и оператор присваивания
 
 class ListStack: public Stack
 {
@@ -103,12 +119,15 @@ class ListStack: public Stack
             }
         }
 
-        int push(DataType * x) override
+        int push(int amount, double cost) override
         {
             if(isFull())
                 return 0;
             Node * temp = new Node; // создаём новый узел
-            temp->data = x; // привязываем данные к новому узлу
+            Record * new_record = new Record;
+            new_record->amount = amount;
+            new_record->cost = cost;
+            temp->data = new_record; // привязываем данные к новому узлу
             temp->next = p_stack; // направляем указатель нового узла на первый элемент списка(или на NULL, если список пустой)
             p_stack = temp; // указателю на список присваиваем адрес нового узла
             return 1;
@@ -145,4 +164,4 @@ class ListStack: public Stack
             return p_stack->data; // возвращаем указатель на данные
         }
 };
-//необходимо также перегрузить конструктор копирования и операцию присваивания
+ // конструктор копирования и оператор присваивания

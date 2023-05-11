@@ -5,27 +5,47 @@
 
 using namespace std;
 
-int chooseStack();
 int enterRecord(Stack * );
-int isInt(string &);
-int isDouble(string &);
 
 int main(void)
 {
     setlocale(LC_ALL, "Rus");
     Stack * stack; // создаём указатель на базовый класс
-    int stack_type = chooseStack();
-    if(stack_type == 3) // если выбрали "выход"
+    int menu;
+
+    do
+    {   
+        system("cls");
+        cout << "Выберите структуру реализации стека" << endl;
+        cout << "1. Массив" << endl;
+        cout << "2. Список" << endl;
+        cout << "3. Выход" << endl;
+        cin >> menu;
+        cin.get();
+        switch(menu)
+        {
+            case 1:
+                try
+                {
+                    stack = new VectorStack;
+                }
+                catch(const bad_alloc& e)
+                {
+                    cerr << e.what() << '\n';
+                    cout << "Ошибка выделения памяти" << endl;
+                }
+                break;
+            case 2:
+                stack = new ListStack;
+                
+                    
+        }
+    }while(menu != 1 && menu != 2 && menu != 3);
+    
+    if(menu == 3) // если выбрали "выход"
     {
         system("cls");
         return 0;
-    }
-    else
-    {
-        if(stack_type == 1) // если выбрали массив
-            stack = new VectorStack;
-        else // если выбрали список
-            stack = new ListStack;
     }
     
     
@@ -84,19 +104,6 @@ int main(void)
             while(cin.get() != '\n');
             continue;
         }
-
-        if(menu == 4)
-        {
-            if(stack->isEmpty())
-                cout << "Пусто" << endl;
-            else
-            {
-                Record * tmp = stack->getTop();
-                cout << tmp->type << " " << tmp->amount << " " << (!tmp->type? tmp->cost : 0) << endl; 
-                
-            }
-            while(cin.get() != '\n');
-        }
     }while(menu != 2);
 
 
@@ -104,21 +111,6 @@ int main(void)
     return 0;
 }
 
-int chooseStack() // функция выбора реализации стека
-{
-    int menu;
-    do
-    {   
-        system("cls");
-        cout << "Выберите структуру реализации стека" << endl;
-        cout << "1. Массив" << endl;
-        cout << "2. Список" << endl;
-        cout << "3. Выход" << endl;
-        cin >> menu;
-        cin.get();
-    }while(menu != 1 && menu != 2 && menu != 3);
-    return menu;
-}
 
 
 int enterRecord(Stack * stack)
@@ -199,27 +191,3 @@ int enterRecord(Stack * stack)
     return 1;
 }
 
-/* int isInt(string &str)
-{
-    int end = str.length();
-    for(int i = 0; i < end; i++)
-    {
-        if(!isdigit(str[i]))
-            return 0;
-    }
-    return 1;
-}
-
-int isDouble(string &str)
-{
-    bool dot = 0; // счётчик точек
-    int end = str.length();
-    for(int i = 0; i < end; i++)
-    {
-        if(!isdigit(str[i]) && str[i] == '.' && dot ) // если не цифра и не первая точка
-            return 0;
-        if(str[i] == '.')
-            dot = 1;
-    }
-    return 1;
-} */
