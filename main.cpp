@@ -2,6 +2,7 @@
 #include <iostream>
 #include <locale.h>
 #include <sstream>
+#include <regex>
 
 using namespace std;
 
@@ -31,13 +32,20 @@ int main(void)
                 }
                 catch(const bad_alloc& e)
                 {
-                    cerr << e.what() << '\n';
+                    cerr << e.what() << endl;
                     cout << "Ошибка выделения памяти" << endl;
                 }
                 break;
             case 2:
-                stack = new ListStack;
-                
+                try
+                {
+                    stack = new ListStack;
+                }
+                catch(const bad_alloc& e)
+                {
+                    cerr << e.what() << endl;
+                    cout << "Ошибка выделения памяти" << endl;
+                }
                     
         }
     }while(menu != 1 && menu != 2 && menu != 3);
@@ -115,11 +123,6 @@ int main(void)
 
 int enterRecord(Stack * stack)
 {
-    Record * new_record;
-    new_record = new Record;
-    if(new_record == NULL)
-        return 0;
-    
     stringstream stream;
     char ctmp;
     int end ,i;
@@ -191,3 +194,21 @@ int enterRecord(Stack * stack)
     return 1;
 }
 
+int enterRecord(Stack * stack)
+{
+    regex regular("([rRsS]{1})""(\\s*)"
+                "(\\d+)"
+                "(\\s* || .?)"
+                "(\\d*\\.?\\d* || .?)");
+    cmatch result;
+    string input_str;
+
+    system("cls");
+    cout << "Введите запись о тороговой оперции" << endl;
+    cout << "(S - префикс операции продажи)" << endl;
+    cout << "(R - префикс операции покупки)" << endl;
+    getline(cin, input_str, '\n'); // считываем строку до опереноса строки
+    if(regex_search(input.))
+
+    
+}
