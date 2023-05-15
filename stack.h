@@ -32,9 +32,9 @@ class VectorStack: public Stack
                 top = -1;
                 max_length = length;
             }
-            catch(bad_alloc)
+            catch(const exception& e)
             {
-                
+                cerr << e.what() << endl;
             }
             
         }
@@ -47,16 +47,65 @@ class VectorStack: public Stack
             delete[] data;
         }
 
+        VectorStack(const VectorStack& other) // конструктор копирования
+        {
+            this->max_length = other.max_length;
+            this->top = -1;
+            try
+                {
+                    this->data = new DataType * [this->max_length];
+                }
+                catch(const exception& e)
+                {
+                    cerr << e.what() << endl;
+                }
+            if(other.top != -1) // если массив не пустой
+            {   
+                while(this->top != other.top) // пока не скопировали все данные в массиве
+                    this->push(other.data[this->top]->amount, other.data[this->top]->cost); // пушим в новый стек данные из копируемого стека
+            }
+        }
+
+        VectorStack& operator = (const VectorStack& other) 
+        {
+            if(this == &other) // если объект присваивается сам себе
+                return *this;
+             this->max_length = other.max_length;
+            this->top = -1;
+            try
+                {
+                    this->data = new DataType * [this->max_length];
+                }
+                catch(const exception& e)
+                {
+                    cerr << e.what() << endl;
+                }
+            if(other.top != -1) // если массив не пустой
+            {   
+                while(this->top != other.top) // пока не скопировали все данные в массиве
+                    this->push(other.data[this->top]->amount, other.data[this->top]->cost); // пушим в новый стек данные из копируемого стека
+            }
+            
+        }
+
         int push(int amount, double cost) override
         {
             if(isFull()) // если стек полон
                 return 0;
             else
             {
-                Record * new_record = new Record;
-                new_record->amount = amount;
-                new_record->cost = cost;
-                data[++top] = new_record; //увеличиваем индекс вершины на 1 и добавляем элемент в массив
+                Record * new_record;
+                try
+                { 
+                    new_record = new Record;
+                    new_record->amount = amount;
+                    new_record->cost = cost;
+                    data[++top] = new_record; //увеличиваем индекс вершины на 1 и добавляем элемент в массив
+                }
+                catch(const exception& e)
+                {
+                    cerr << e.what() << endl;
+                }
                 return 1;
             }
         }
@@ -90,7 +139,7 @@ class VectorStack: public Stack
             return data[top];
         }
 };
-// конструктор копирования и оператор присваивания
+
 
 class ListStack: public Stack
 {
@@ -119,17 +168,45 @@ class ListStack: public Stack
             }
         }
 
+        ListStack(const ListStack &other) // конструктор копирования
+        {
+            if(other.p_stack != NULL) // если копируемый стек не пуст
+            {
+                Node * node = other.p_stack; // указатель на элемент копируемого стека
+                this->p_stack = new Node; // указатель на элемент нового стека
+                Node * new_node = p_stack;
+                new_node->data = new Record;
+                new_node->next = NULL;
+                new_node->data->amount = node->data->amount;
+                new_node->data->cost = node->data->cost;
+                node = node->next; 
+                while(node) // пока не конец списка
+                {
+                    
+                    (node->data->amount, node->data->cost);
+                    node = node->next;
+                }
+            }
+        }
+
         int push(int amount, double cost) override
         {
             if(isFull())
                 return 0;
-            Node * temp = new Node; // создаём новый узел
-            Record * new_record = new Record;
-            new_record->amount = amount;
-            new_record->cost = cost;
-            temp->data = new_record; // привязываем данные к новому узлу
-            temp->next = p_stack; // направляем указатель нового узла на первый элемент списка(или на NULL, если список пустой)
-            p_stack = temp; // указателю на список присваиваем адрес нового узла
+            try
+            {
+                Node * temp = new Node; // создаём новый узел
+                Record * new_record = new Record; // создаём новую запись
+                new_record->amount = amount; // заполняем запись данными
+                new_record->cost = cost; //...
+                temp->data = new_record; // привязываем данные к новому узлу
+                temp->next = p_stack; // направляем указатель нового узла на первый элемент списка(или на NULL, если список пустой)
+                p_stack = temp; // указателю на список присваиваем адрес нового узла
+            }
+            catch(const exception& e)
+            {
+                cerr << e.what() << endl;
+            }
             return 1;
         }
 
