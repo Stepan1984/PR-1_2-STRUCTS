@@ -1,4 +1,5 @@
 #include "struct.h"
+#include <iostream>
 #include <cstdio> // для определения NULL
 using namespace std;
 
@@ -29,14 +30,13 @@ class VectorStack: public Stack
             try
             {
                 data = new DataType * [length]; // создаём массив для указателей на данные
-                top = -1;
-                max_length = length;
             }
             catch(const exception& e)
-            {
-                cerr << e.what() << endl;
+                {
+                    cerr << e.what() << endl;
             }
-            
+            top = -1;
+            max_length = length;
         }
 
         ~VectorStack() // деструктор
@@ -172,23 +172,86 @@ class ListStack: public Stack
         {
             if(other.p_stack != NULL) // если копируемый стек не пуст
             {
-                Node * node = other.p_stack; // указатель на элемент копируемого стека
-                this->p_stack = new Node; // указатель на элемент нового стека
-                Node * new_node = p_stack;
-                new_node->data = new Record;
-                new_node->next = NULL;
-                new_node->data->amount = node->data->amount;
-                new_node->data->cost = node->data->cost;
-                node = node->next; 
-                while(node) // пока не конец списка
+                Node * other_node = other.p_stack; // указатель на элемент копируемого стека
+                try
                 {
-                    
-                    (node->data->amount, node->data->cost);
-                    node = node->next;
+                     this->p_stack = new Node; // выделяем память под новый узел
+                    p_stack->data = new Record; // выделяем память под запись
+                }
+                catch(const exception& e)
+                {
+                    cerr << e.what() << endl;
+                }
+                p_stack->next = NULL;
+                p_stack->data->amount = other_node->data->amount; // копируем данные 
+                p_stack->data->cost = other_node->data->cost; // ...
+                other_node = other_node->next; // переходим к следующему узлу в копируемом списке списке
+
+                Node * new_node = p_stack; // указатель на элемент нового стека
+                while(other_node) // пока не конец копируемого списка
+                {   
+                    try
+                    {
+                        new_node->next = new Node; // выделяем память под новый узел
+                        new_node = new_node->next; // переходим к новому узлу
+                        new_node->next = NULL;
+                        new_node->data = new Record; // выделяем память под запись
+                    }
+                    catch(const exception& e)
+                    {
+                        cerr << e.what() << endl;
+                    }
+
+                    new_node->data->amount = other_node->data->amount; // копируем данные
+                    new_node->data->cost = other_node->data->cost; // ...
+                    other_node = other_node->next; // переходим к следующему узлу копируемого списка;
                 }
             }
         }
 
+        ListStack& operator = (const ListStack &other) // оператор присвоения
+        {
+            if(this == &other)
+                return *this;
+            if(other.p_stack != NULL) // если копируемый стек не пуст
+            {
+                Node * other_node = other.p_stack; // указатель на элемент копируемого стека
+                try
+                {
+                     this->p_stack = new Node; // выделяем память под новый узел
+                    p_stack->data = new Record; // выделяем память под запись
+                }
+                catch(const exception& e)
+                {
+                    cerr << e.what() << endl;
+                }
+                p_stack->next = NULL;
+                p_stack->data->amount = other_node->data->amount; // копируем данные 
+                p_stack->data->cost = other_node->data->cost; // ...
+                other_node = other_node->next; // переходим к следующему узлу в копируемом списке списке
+
+                Node * new_node = p_stack; // указатель на элемент нового стека
+                while(other_node) // пока не конец копируемого списка
+                {   
+                    try
+                    {
+                        new_node->next = new Node; // выделяем память под новый узел
+                        new_node = new_node->next; // переходим к новому узлу
+                        new_node->next = NULL;
+                        new_node->data = new Record; // выделяем память под запись
+                    }
+                    catch(const exception& e)
+                    {
+                    cerr << e.what() << endl;
+                    }
+
+                    new_node->data->amount = other_node->data->amount; // копируем данные
+                    new_node->data->cost = other_node->data->cost; // ...
+                    other_node = other_node->next; // переходим к следующему узлу копируемого списка;
+                }
+            }
+        }
+        
         int push(int amount, double cost) override
         {
             if(isFull())

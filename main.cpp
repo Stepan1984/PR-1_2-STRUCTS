@@ -2,7 +2,9 @@
 #include <iostream>
 #include <locale.h>
 #include <sstream>
-#include <regex>
+#include <math.h>
+//#include <regex>
+#define EPS 1e-6
 
 using namespace std;
 
@@ -30,7 +32,7 @@ int main(void)
                 {
                     stack = new VectorStack;
                 }
-                catch(const bad_alloc& e)
+                catch(const exception& e)
                 {
                     cerr << e.what() << endl;
                     cout << "Ошибка выделения памяти" << endl;
@@ -41,7 +43,7 @@ int main(void)
                 {
                     stack = new ListStack;
                 }
-                catch(const bad_alloc& e)
+                catch(const exception& e)
                 {
                     cerr << e.what() << endl;
                     cout << "Ошибка выделения памяти" << endl;
@@ -56,8 +58,6 @@ int main(void)
         return 0;
     }
     
-    
-    int menu;
     do
     {
         system("cls");
@@ -68,45 +68,41 @@ int main(void)
         cin.get();
         if(menu == 1)
         {
-            if(!enterRecord(stack))
-            {
-                system("cls");
-                cout << "Недостаточно памяти" << endl;
-                cout << "ENTER - для возврата в меню" << endl;
-                while(cin.get() != '\n');
-                continue;
-            }
-
             system("cls");
-
-            if(stack->getTop()->type == 0) // если добавили запись о закупке 
+            int result = enterRecord(stack);
+            if(result == 0)
             {
-                cout << "Закупили товара на " << stack->getTop()->amount * stack->getTop()->cost << "$" << endl; // выводим общую стоимость закупленной партии
+                cout << "Операция отклонена" << endl;
             }
-            else // если добавили запись о продаже
-            {
-                Record * sell_record = stack->pop(); // вытаскиваем запись о продаже из стека
-                Record * tmp_record;
-                while(sell_record->amount > 0 && !stack->isEmpty()) // пока в стеке есть записи и не проданы все запрошенные грузы
+            else{
+                if(result == -1) // если добавили запись о закупке
                 {
-                    tmp_record = stack->pop(); // достаём из стека запись о товаре
-                    if(tmp_record->amount > sell_record->amount) // если товара больше, чем нужно продать
-                    {
-                        cout << sell_record->amount << " штук по " << tmp_record->cost * 1.2 << " $ каждый на сумму " << tmp_record->cost * sell_record->amount * 1.2 << " $" << endl;
-                        tmp_record->amount -= sell_record->amount; // уменьшаем количество товара на складе
-                        stack->push(tmp_record); // отправляем данные обратно в стек
-                        sell_record->amount = 0; // обнуляем количество 
-                    }
-                    else // если количество продаваемой продукции >= количеству товара в данной записи стека о наличии
-                    {
-                        cout << tmp_record->amount << " штук по " << tmp_record->cost * 1.2 << " $ каждый на сумму " << tmp_record->amount * tmp_record->cost * 1.2 << " $" << endl;
-                        sell_record->amount -= tmp_record->amount;
-                        delete tmp_record; // удаляем запись, т.к. все товары по этой цене проданы
-                    }
+                    cout << "Закупили товара на " << stack->getTop()->amount * stack->getTop()->cost << "$" << endl; // выводим общую стоимость закупленной партии
                 }
+                else // если добавили запись о продаже
+                {
+                    Record * tmp_record;
+                    while(result > 0 && !stack->isEmpty()) // пока в стеке есть записи и не проданы весь требуемый товар
+                    {
+                        tmp_record = stack->pop(); // достаём из стека запись о товаре
+                        if(tmp_record->amount > result) // если товара больше, чем нужно продать
+                        {
+                            cout << result << " штук по " << tmp_record->cost * 1.2 << " $ каждый на сумму " << tmp_record->cost * result * 1.2 << " $" << endl;
+                            tmp_record->amount -= result; // уменьшаем количество товара на складе
+                            stack->push(tmp_record->amount,tmp_record->cost); // отправляем данные обратно в стек
+                            result = 0; // обнуляем количество 
+                        }
+                        else // если количество продаваемой продукции >= количеству товара в данной записи стека о наличии
+                        {
+                            cout << tmp_record->amount << " штук по " << tmp_record->cost * 1.2 << " $ каждый на сумму " << tmp_record->amount * tmp_record->cost * 1.2 << " $" << endl;
+                            result -= tmp_record->amount;
+                            delete tmp_record; // удаляем запись, т.к. все товары по этой цене проданы
+                        }
+                    }
 
-                if(stack->isEmpty() && sell_record->amount > 0) // если не хватило товара
-                    cout << "на складе не хватает " << sell_record->amount << " позиций товара" << endl;
+                    if(stack->isEmpty() && result > 0) // если не хватило товара
+                        cout << "на складе не хватает " << result << " позиций товара" << endl;
+                }   
             }
             cout << "ENTER - для возврата в меню" << endl;
             while(cin.get() != '\n');
@@ -124,8 +120,10 @@ int main(void)
 int enterRecord(Stack * stack)
 {
     stringstream stream;
+    bool operation_type; // тип операции 1 - продажа 0 - закупка
     char ctmp;
-    int end ,i;
+    int end , i, amount;
+    double cost;
     string input;
     do
     {
@@ -141,9 +139,9 @@ int enterRecord(Stack * stack)
         if(i == end) // если не нашли
             continue; // повторяем запрос на запись
         if(input[i] == 's' || input[i] == 'S')
-            new_record->type = 1;
+            operation_type = 1;
         else
-            new_record->type = 0;
+            operation_type = 0;
 
         while(i != end && !isdigit(input[i])) // ищем цифру
             i++;
@@ -154,12 +152,11 @@ int enterRecord(Stack * stack)
         stream.clear();
         while(isdigit(input[i])) // пока цифры
             stream << input[i++];
-        stream >> new_record->amount;
+        stream >> amount;
         
 
-        if(new_record->type == 0)
+        if(operation_type == 0)
         {
-        
             bool dot = false;
             while(i != end && !isdigit(input[i]) && input[i] != '.') // ищем цифру
                 i++;
@@ -183,18 +180,29 @@ int enterRecord(Stack * stack)
             }
             if(i == start_index)
                 continue;
-            stream >> new_record->cost;
-            
+            stream >> cost; 
         }
         break;
 
     }while(1);
 
-    stack->push(new_record);
-    return 1;
+    if(fabs(cost) < EPS || amount <= 0)
+    {
+                return 0;
+    }
+
+    if(operation_type) // если операция продажи
+    {
+        return amount;
+    }
+    else
+    {
+        stack->push(amount, cost);
+        return -1;
+    }
 }
 
-int enterRecord(Stack * stack)
+/* int enterRecord(Stack * stack)
 {
     regex regular("([rRsS]{1})""(\\s*)"
                 "(\\d+)"
@@ -210,5 +218,9 @@ int enterRecord(Stack * stack)
     getline(cin, input_str, '\n'); // считываем строку до опереноса строки
     if(regex_search(input.))
 
-    
-}
+} */
+
+
+/* 
+if(enterRec
+ */
