@@ -89,7 +89,7 @@ int main(void)
                         {
                             cout << result << " штук по " << tmp_record->cost * 1.2 << " $ каждый на сумму " << tmp_record->cost * result * 1.2 << " $" << endl;
                             tmp_record->amount -= result; // уменьшаем количество товара на складе
-                            stack->push(tmp_record->amount,tmp_record->cost); // отправл€ем данные обратно в стек
+                            stack->push(*tmp_record); // отправл€ем данные обратно в стек
                             result = 0; // обнул€ем количество 
                         }
                         else // если количество продаваемой продукции >= количеству товара в данной записи стека о наличии
@@ -131,7 +131,7 @@ int enterRecord(Stack * stack)
         cout << "¬ведите запись о тороговой оперции" << endl;
         cout << "(S - префикс операции продажи)" << endl;
         cout << "(R - префикс операции покупки)" << endl;
-        getline(cin, input, '\n'); // считываем строку до опереноса строки
+        getline(cin, input, '\n'); // считываем строку до переноса строки
         end = input.length();
         i = 0;
         while(input[i] != 's' && input[i] != 'S' && input[i] != 'r' && input[i] != 'R' && i < end) // ищем тип записи
@@ -197,7 +197,10 @@ int enterRecord(Stack * stack)
     }
     else
     {
-        stack->push(amount, cost);
+        Record new_record;
+        new_record.amount = amount;
+        new_record.cost = cost;
+        stack->push(new_record);
         return -1;
     }
 }
