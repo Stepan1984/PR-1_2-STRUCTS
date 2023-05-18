@@ -1,6 +1,6 @@
 #include "struct.h"
 #include <iostream>
-#include <cstdio> // для определения NULL
+#include <cstdio> // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ NULL
 using namespace std;
 
 typedef Record DataType;
@@ -10,26 +10,26 @@ class Stack
     public:
         Stack(){};
         ~Stack(){};
-        virtual int push(int amount, double cost) = 0; // добавление
-        virtual DataType * pop() = 0; // извлечение
-        virtual int isEmpty() = 0; // проверка на пустоту
-        virtual int isFull() = 0; // проверка на заполненность
-        virtual DataType *  getTop() = 0; // просмотр верхнего элемента
+        virtual int push(int amount, double cost) = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        virtual DataType * pop() = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        virtual int isEmpty() = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        virtual int isFull() = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        virtual DataType *  getTop() = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 };
 
 
 class VectorStack: public Stack
 {
     private:
-        int top;  // индекс вершины стека
-        int max_length;   // максимальная глубина стека  
-        DataType ** data;  // указатель на массив указателей на данные
+        int top;  // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+        int max_length;   // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ  
+        DataType ** data;  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     public:
-        VectorStack(int length = 100) // конструктор
+        VectorStack(int length = 100) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
             try
             {
-                data = new DataType * [length]; // создаём массив для указателей на данные
+                data = new DataType * [length]; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             }
             catch(const exception& e)
                 {
@@ -39,15 +39,15 @@ class VectorStack: public Stack
             max_length = length;
         }
 
-        ~VectorStack() // деструктор
+        ~VectorStack() // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
             top++;
             for(int i = 0; i < top; i++)
-                delete data[i]; // очищаем память от данных по каждому указателю
+                delete data[i]; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             delete[] data;
         }
 
-        VectorStack(const VectorStack& other) // конструктор копирования
+        VectorStack(const VectorStack& other) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
             this->max_length = other.max_length;
             this->top = -1;
@@ -59,20 +59,25 @@ class VectorStack: public Stack
                 {
                     cerr << e.what() << endl;
                 }
-            if(other.top != -1) // если массив не пустой
+            if(other.top != -1) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             {   
-                while(this->top != other.top) // пока не скопировали все данные в массиве
-                    this->push(other.data[this->top]->amount, other.data[this->top]->cost); // пушим в новый стек данные из копируемого стека
+                while(this->top != other.top) // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                    this->push(other.data[this->top]->amount, other.data[this->top]->cost); // пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
             }
         }
 
-        VectorStack& operator = (const VectorStack& other) 
+        VectorStack& operator = (const VectorStack& other) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ(=)
         {
-            if(this == &other) // если объект присваивается сам себе
+            if(this == &other) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
                 return *this;
-             this->max_length = other.max_length;
-            this->top = -1;
-            try
+            if(this->max_length != other.max_length)
+            {
+                for(int i = 0; i < this->max_length; i++)
+                    delete data[i]; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                delete[] data;
+                this->max_length = other.max_length;
+                this->top = -1;
+                try
                 {
                     this->data = new DataType * [this->max_length];
                 }
@@ -80,17 +85,19 @@ class VectorStack: public Stack
                 {
                     cerr << e.what() << endl;
                 }
-            if(other.top != -1) // если массив не пустой
+            }
+                
+            if(other.top != -1) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             {   
-                while(this->top != other.top) // пока не скопировали все данные в массиве
-                    this->push(other.data[this->top]->amount, other.data[this->top]->cost); // пушим в новый стек данные из копируемого стека
+                while(this->top != other.top) // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                    this->push(other.data[this->top]->amount, other.data[this->top]->cost); // пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
             }
             
         }
 
         int push(int amount, double cost) override
         {
-            if(isFull()) // если стек полон
+            if(isFull()) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
                 return 0;
             else
             {
@@ -100,7 +107,7 @@ class VectorStack: public Stack
                     new_record = new Record;
                     new_record->amount = amount;
                     new_record->cost = cost;
-                    data[++top] = new_record; //увеличиваем индекс вершины на 1 и добавляем элемент в массив
+                    data[++top] = new_record; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 1 пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 }
                 catch(const exception& e)
                 {
@@ -112,24 +119,24 @@ class VectorStack: public Stack
 
         DataType * pop() override
         {
-            if(isEmpty()) // если стек пуст
+            if(isEmpty()) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
                 return NULL;
             else
-                return data[top--]; // возвращаем верхний элемент и уменьшаем индекс вершины
+                return data[top--]; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         }
 
         int isFull() override
         {
             if(data == NULL)
                 return 1;
-            return top == max_length - 1; // 1 - если индекс вершины равен максимальной глубине стека
+            return top == max_length - 1; // 1 - пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         }
 
         int isEmpty() override
         {
             if(data == NULL)
                 return 1;
-            return top < 0; // 1 - если индекс вершины меньше нуля
+            return top < 0; // 1 - пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         }
 
         DataType * getTop() override
@@ -146,17 +153,17 @@ class ListStack: public Stack
     private:
         struct Node
         {
-            DataType * data; // указатель на данные
-            Node * next; // указатель на следующий элемент списка
-        } * p_stack; // указатель на 1 элемент списка
+            DataType * data; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+            Node * next; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+        } * p_stack; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 1 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     
     public:
-        ListStack() // конструктор
+        ListStack() // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
             p_stack = NULL;
         }
 
-        ~ListStack() // деструктор
+        ~ListStack() // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
             Node * temp;
             while(p_stack)
@@ -168,88 +175,109 @@ class ListStack: public Stack
             }
         }
 
-        ListStack(const ListStack &other) // конструктор копирования
+        ListStack(const ListStack &other) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
-            if(other.p_stack != NULL) // если копируемый стек не пуст
+            if(other.p_stack != NULL) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
             {
-                Node * other_node = other.p_stack; // указатель на элемент копируемого стека
+                Node * other_node = other.p_stack; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 try
                 {
-                     this->p_stack = new Node; // выделяем память под новый узел
-                    p_stack->data = new Record; // выделяем память под запись
+                     this->p_stack = new Node; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+                    p_stack->data = new Record; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+                    p_stack->next = NULL; //NULL пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                    p_stack->data->amount = other_node->data->amount; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ data 
+                    p_stack->data->cost = other_node->data->cost; // ...
+                    other_node = other_node->next; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 }
                 catch(const exception& e)
                 {
                     cerr << e.what() << endl;
+                    abort();
                 }
-                p_stack->next = NULL;
-                p_stack->data->amount = other_node->data->amount; // копируем данные 
-                p_stack->data->cost = other_node->data->cost; // ...
-                other_node = other_node->next; // переходим к следующему узлу в копируемом списке списке
 
-                Node * new_node = p_stack; // указатель на элемент нового стека
-                while(other_node) // пока не конец копируемого списка
+                Node * new_node = p_stack; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+                while(other_node) // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 {   
                     try
                     {
-                        new_node->next = new Node; // выделяем память под новый узел
-                        new_node = new_node->next; // переходим к новому узлу
-                        new_node->next = NULL;
-                        new_node->data = new Record; // выделяем память под запись
+                        new_node->next = new Node; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+                        new_node = new_node->next; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+                        new_node->next = NULL; // NULL пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                        new_node->data = new Record; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+                        new_node->data->amount = other_node->data->amount; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ data
+                        new_node->data->cost = other_node->data->cost; // ...
+                        other_node = other_node->next; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ;
                     }
                     catch(const exception& e)
                     {
                         cerr << e.what() << endl;
-                    }
-
-                    new_node->data->amount = other_node->data->amount; // копируем данные
-                    new_node->data->cost = other_node->data->cost; // ...
-                    other_node = other_node->next; // переходим к следующему узлу копируемого списка;
+                        abort();
+                    }   
                 }
             }
         }
 
-        ListStack& operator = (const ListStack &other) // оператор присвоения
+        ListStack& operator = (const ListStack &other) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         {
-            if(this == &other)
+            if(this == &other) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 return *this;
-            if(other.p_stack != NULL) // если копируемый стек не пуст
+            
+            Node * other_node = other.p_stack; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+            Node * this_node = this->p_stack; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+
+            if(other_node != NULL && this_node == NULL) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             {
-                Node * other_node = other.p_stack; // указатель на элемент копируемого стека
                 try
                 {
-                     this->p_stack = new Node; // выделяем память под новый узел
-                    p_stack->data = new Record; // выделяем память под запись
+                    this_node = new Node;
+                    this_node->data = new Record;
+                    this_node->next = NULL;
                 }
-                catch(const exception& e)
+                catch(const std::exception& e)
                 {
-                    cerr << e.what() << endl;
-                }
-                p_stack->next = NULL;
-                p_stack->data->amount = other_node->data->amount; // копируем данные 
-                p_stack->data->cost = other_node->data->cost; // ...
-                other_node = other_node->next; // переходим к следующему узлу в копируемом списке списке
-
-                Node * new_node = p_stack; // указатель на элемент нового стека
-                while(other_node) // пока не конец копируемого списка
-                {   
-                    try
-                    {
-                        new_node->next = new Node; // выделяем память под новый узел
-                        new_node = new_node->next; // переходим к новому узлу
-                        new_node->next = NULL;
-                        new_node->data = new Record; // выделяем память под запись
-                    }
-                    catch(const exception& e)
-                    {
-                    cerr << e.what() << endl;
-                    }
-
-                    new_node->data->amount = other_node->data->amount; // копируем данные
-                    new_node->data->cost = other_node->data->cost; // ...
-                    other_node = other_node->next; // переходим к следующему узлу копируемого списка;
+                    std::cerr << e.what() << '\n';
+                    abort();
                 }
             }
+
+            while(other_node != NULL) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            {
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+                this_node->data->amount = other_node->data->amount;
+                this_node->data->cost = other_node->data->cost;
+                
+                if(other_node->next != NULL && this_node->next == NULL) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+                {
+                    try
+                    {
+                        this_node->next = new Node; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+                        this_node->next->data = new Record; // пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                        this_node->next->next = NULL; // NULL пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+                    }
+                    catch(const std::exception& e)
+                    {
+                        std::cerr << e.what() << '\n';
+                        abort();
+                    }
+                }
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+                this_node = this_node->next; 
+                other_node = other_node->next;
+            }
+
+            if(this_node != NULL) // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+            {
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+                Node * tmp;
+                while (this_node)
+                {
+                    tmp = this_node;
+                    this_node = this_node->next;
+                    delete tmp->data;
+                    delete tmp;
+                }
+            }
+        
         }
         
         int push(int amount, double cost) override
@@ -258,28 +286,29 @@ class ListStack: public Stack
                 return 0;
             try
             {
-                Node * temp = new Node; // создаём новый узел
-                Record * new_record = new Record; // создаём новую запись
-                new_record->amount = amount; // заполняем запись данными
+                Node * temp = new Node; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+                Record * new_record = new Record; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+                new_record->amount = amount; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 new_record->cost = cost; //...
-                temp->data = new_record; // привязываем данные к новому узлу
-                temp->next = p_stack; // направляем указатель нового узла на первый элемент списка(или на NULL, если список пустой)
-                p_stack = temp; // указателю на список присваиваем адрес нового узла
+                temp->data = new_record; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+                temp->next = p_stack; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ(пїЅпїЅпїЅ пїЅпїЅ NULL, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)
+                p_stack = temp; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
             }
             catch(const exception& e)
             {
                 cerr << e.what() << endl;
+                abort();
             }
             return 1;
         }
 
         DataType * pop() override
         {   
-            Node * p_temp_Node = p_stack; //временный указатель на узел
-            DataType * p_temp_Datatype = p_stack->data; //временный указатель на данные
-            p_stack = p_stack->next; // начало списка устанавливаем на 2 элемент
-            delete p_temp_Node; // очищаем память от узла
-            return p_temp_Datatype; // возвращаем указатель на данные
+            Node * p_temp_Node = p_stack; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
+            DataType * p_temp_Datatype = p_stack->data; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+            p_stack = p_stack->next; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 2 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            delete p_temp_Node; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
+            return p_temp_Datatype; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         }
 
         int isFull() override
@@ -301,7 +330,7 @@ class ListStack: public Stack
 
         DataType * getTop()
         {
-            return p_stack->data; // возвращаем указатель на данные
+            return p_stack->data; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         }
 };
- // конструктор копирования и оператор присваивания
+ 

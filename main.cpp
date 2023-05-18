@@ -202,25 +202,3 @@ int enterRecord(Stack * stack)
     }
 }
 
-/* int enterRecord(Stack * stack)
-{
-    regex regular("([rRsS]{1})""(\\s*)"
-                "(\\d+)"
-                "(\\s* || .?)"
-                "(\\d*\\.?\\d* || .?)");
-    cmatch result;
-    string input_str;
-
-    system("cls");
-    cout << "Введите запись о тороговой оперции" << endl;
-    cout << "(S - префикс операции продажи)" << endl;
-    cout << "(R - префикс операции покупки)" << endl;
-    getline(cin, input_str, '\n'); // считываем строку до опереноса строки
-    if(regex_search(input.))
-
-} */
-
-
-/* 
-if(enterRec
- */
