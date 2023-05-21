@@ -14,7 +14,7 @@ class Stack
         virtual DataType * pop() = 0; // достать элемент из стека
         virtual int isEmpty() = 0; // проверка пустоты стека
         virtual int isFull() = 0; // проверка заполненности 
-        virtual DataType *  getTop() = 0; // неразрушающее чтение с вершины стека
+        virtual DataType * getTop() = 0; // неразрушающее чтение с вершины стека
 };
 
 
@@ -98,16 +98,26 @@ class VectorStack: public Stack
             
         }
 
-        int push (DataType new_record) override // положить элемент в стек
+        int push (DataType my_record) override // положить элемент в стек
         {
             if(isFull()) // если массив полон
                 return 0;
             else
-                data[++top] = &new_record; //добавляем ссылку на данные в массив и увеличиваем индекс вершины на 1
+                {   
+                    try
+                    {
+                        Record * new_record = new Record(my_record);
+                        data[++top] = new_record; //добавляем ссылку на данные в массив и увеличиваем индекс вершины на 1
+                    }
+                    catch(const exception& e)
+                    {
+                        cerr << e.what() << endl;
+                        abort(); 
+                    }
+                }
             return 1;
         }
         
-
         DataType * pop() override // достать элемент
         {
             if(isEmpty()) // если стек пуст
@@ -130,7 +140,7 @@ class VectorStack: public Stack
             return top < 0; // если значение вершины < 0, то стек пуст
         }
 
-        DataType * getTop() override // неразрушающее чтение
+        DataType* getTop() override // неразрушающее чтение
         {
             if(isEmpty())
                 return NULL;
@@ -213,6 +223,7 @@ class ListStack: public Stack
             if(this == &other) // если присваиваем этот же объект
                 return *this;
             
+            //Record tmp;
             Node * other_node = other.p_stack; // указатель на узел копируемого списка
             Node * this_node = this->p_stack; // указатель на узел списка в который копируют
 
@@ -234,8 +245,7 @@ class ListStack: public Stack
             while(other_node != NULL) // пока есть что копировать
             {
                 // копирование данных
-                this_node->data->amount = other_node->data->amount;
-                this_node->data->cost = other_node->data->cost;
+                *this_node->data = *other_node->data;
                 
                 if(other_node->next != NULL && this_node->next == NULL) // если ещё есть что копировать, но в нашем списке закончились узлы
                 {
@@ -271,14 +281,15 @@ class ListStack: public Stack
         
         }
         
-        int push(DataType new_record) override
+        int push(DataType my_record) override
         {
-            if(isFull())
+            if(isFull()) // если стек полон
                 return 0;
             try
             {
-                Node * temp = new Node; // создаём новый узел 
-                temp->data = &new_record; // кладём данные в узел списка
+                Node * temp = new Node; // создаём новый узел
+                Record * new_record = new Record(my_record);
+                temp->data = new_record; // кладём данные в узел списка
                 temp->next = p_stack; // направляем указатель на верхний элемент стека
                 p_stack = temp; // делаем этот узел вершиной стека
             }
@@ -316,7 +327,7 @@ class ListStack: public Stack
             return p_stack == NULL;
         }
 
-        DataType * getTop() 
+        DataType * getTop() // неразрушающее чтение
         {
             return p_stack->data; // возвращаем вершину 
         }

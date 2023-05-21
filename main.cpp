@@ -77,6 +77,7 @@ int main(void)
             else{
                 if(result == -1) // если добавили запись о закупке
                 {
+                    cout << stack->getTop()->amount << ' ' << (stack->getTop()->cost) << endl;
                     cout << "Закупили товара на " << stack->getTop()->amount * stack->getTop()->cost << "$" << endl; // выводим общую стоимость закупленной партии
                 }
                 else // если добавили запись о продаже
@@ -134,7 +135,7 @@ int enterRecord(Stack * stack)
         getline(cin, input, '\n'); // считываем строку до переноса строки
         end = input.length();
         i = 0;
-        while(input[i] != 's' && input[i] != 'S' && input[i] != 'r' && input[i] != 'R' && i < end) // ищем тип записи
+        while(input[i] != 's' && input[i] != 'S' && input[i] != 'r' && input[i] != 'R' && i < end) // ищем тип операции
             i++;
         if(i == end) // если не нашли
             continue; // повторяем запрос на запись
@@ -151,7 +152,7 @@ int enterRecord(Stack * stack)
 
         stream.clear();
         while(isdigit(input[i])) // пока цифры
-            stream << input[i++];
+            stream << input[i++]; 
         stream >> amount;
         
 
@@ -178,29 +179,28 @@ int enterRecord(Stack * stack)
                     
                 i++;
             }
-            if(i == start_index)
-                continue;
+            if(i == start_index) // если не нашли число
+                continue; // повторяем запрос на ввод записи
             stream >> cost; 
         }
         break;
 
     }while(1);
 
-    if(fabs(cost) < EPS || amount <= 0)
+    if(amount <= 0 || (!operation_type && fabs(cost) < EPS )) // если значение цены или значение количества меньше нуля
     {
-                return 0;
+                return 0; // некорректные данные
     }
 
     if(operation_type) // если операция продажи
     {
-        return amount;
+        return amount; // возвращаем количество товаров, которое нужно продать
     }
-    else
+    else // если операция закупки
     {
-        Record new_record;
-        new_record.amount = amount;
-        new_record.cost = cost;
-        stack->push(new_record);
+        Record new_record(amount, cost); // создаём запись 
+        stack->push(new_record); // пушим запись в стек
+
         return -1;
     }
 }
